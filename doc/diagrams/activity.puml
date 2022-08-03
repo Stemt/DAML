@@ -1,0 +1,13 @@
+@startuml
+
+(*) --> "define input and output databuffers"
+--> "record operations on databuffers"
+--> "execute job"
+--> "read output buffers"
+if "another same operation" then
+--> "assign new input data"
+-> "execute job"
+else
+--> (*)
+
+@enduml

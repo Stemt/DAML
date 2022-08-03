@@ -1,0 +1,82 @@
+@startuml
+
+package daml{
+    class Manager{
+        init() : void
+        register_devices() : void
+    }
+    class Operation_sequence{
+        operations : operation*
+        alloc() : Operation_sequence*
+        free(Operation* Operation_sequence) : void
+        record_operation(type : Operation_type, params : Buffer*) : int
+    }
+    class Operation{
+        type : Operation_type
+        parameters : Buffer*
+    }
+    enum Operation_type{
+        MATRIX_ADD
+        MATRIX_SUBTRACT
+        MATRIX_SCALAR_MULTIPLY
+        MATRIX_SCALAR_DIVIDE
+        MATRIX_DOT
+        MATRIX_TRANSPOSE
+    }
+    class Buffer{
+        structure_type : Structure_type
+        data_type : Data_type
+        buffer_type : Buffer_type
+        size : size_t
+        data : void*
+        alloc(structure_type : Structure_type, data_type : Data_type, buffer_type : Buffer_type, size : size_t, data : void*) : Buffer*
+        free(Buffer* buffer) : void
+    }
+    enum Structure_type{
+        SCALAR
+        VECTOR
+        MATRIX
+    }
+    enum Buffer_type{
+        INPUT
+        OUTPUT
+        INTERMEDIATE
+    }
+    enum Data_type{
+        INT32
+        UINT32
+        FLOAT32
+    }
+    interface Device{
+        execute(sequence : Operation_sequence*) : void
+        execute_async(sequence : Operation_sequence*) : void
+        await() : void
+    }
+    class CPU_device{}
+    class GPU_device{}
+
+    Manager --> Operation_sequence
+    Operation_sequence --> Operation
+
+    Structure_type -[hidden]- Buffer_type
+    Buffer_type -[hidden]- Data_type
+
+    Operation --> Operation_type
+    Operation --> Buffer
+    Buffer -> Data_type
+    Buffer -> Buffer_type
+    Buffer -> Structure_type
+    Manager -> Device
+    Device <|- CPU_device
+    Device <|-- GPU_device
+}
+
+package OpenBLAS{
+
+}
+
+package Vulkan{
+    
+}
+
+@enduml

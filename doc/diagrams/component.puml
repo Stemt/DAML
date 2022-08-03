@@ -1,0 +1,26 @@
+@startuml
+
+component UserProgram
+
+component OperationManager
+interface IOperationManager
+
+interface IDevice
+
+component CPU
+
+component GPU
+
+UserProgram --( IOperationManager
+IOperationManager -- OperationManager
+
+OperationManager --( IDevice
+IDevice -- CPU
+
+IDevice -- GPU
+
+
+
+
+
+@enduml
