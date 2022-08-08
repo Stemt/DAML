@@ -1,7 +1,7 @@
 @startuml
 
 package daml{
-    class Manager{
+    class daml{
         init() : void
         register_devices() : void
     }
@@ -52,10 +52,14 @@ package daml{
         execute_async(sequence : Operation_sequence*) : void
         await() : void
     }
-    class CPU_device{}
-    class GPU_device{}
+    class CPU_device{
 
-    Manager --> Operation_sequence
+    }
+    class GPU_device{
+
+    }
+
+    daml --> Operation_sequence
     Operation_sequence --> Operation
 
     Structure_type -[hidden]- Buffer_type
@@ -66,7 +70,7 @@ package daml{
     Buffer -> Data_type
     Buffer -> Buffer_type
     Buffer -> Structure_type
-    Manager -> Device
+    daml -> Device
     Device <|- CPU_device
     Device <|-- GPU_device
 }
